@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
+import { useStore } from '../lib/store';
 
 export default function Navbar() {
+  const { user } = useStore();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <nav className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,9 +27,21 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center">
-            <button className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
-              Sign In
-            </button>
+            {user ? (
+              <button
+                onClick={handleSignOut}
+                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </div>

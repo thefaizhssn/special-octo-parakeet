@@ -6,16 +6,21 @@ interface StoreState {
   products: Product[];
   subscriptions: Subscription[];
   loading: boolean;
+  user: any | null;
   fetchProducts: () => Promise<void>;
   fetchUserSubscriptions: () => Promise<void>;
   createProduct: (product: Omit<Product, 'id' | 'created_at' | 'user_id'>) => Promise<void>;
   subscribeToProduct: (productId: string) => Promise<void>;
+  setUser: (user: any) => void;
 }
 
 export const useStore = create<StoreState>((set, get) => ({
   products: [],
   subscriptions: [],
   loading: false,
+  user: null,
+
+  setUser: (user) => set({ user }),
 
   fetchProducts: async () => {
     set({ loading: true });
